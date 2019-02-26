@@ -56,24 +56,6 @@ def create_order():
     orders.append(order)
     return jsonify({'order': order}), 201
 
-@app.route('/uran/api/v1.0/orders/<int:order_id>', methods=['PUT'])
-def update_order(order_id):
-    order = [order for order in orders if order['id'] == order_id]
-    if len(order) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'instrument' in request.json and type(request.json['instrument']) != unicode:
-        abort(400)
-    if 'quantity' in request.json and type(request.json['quantity']) is not unicode:
-        abort(400)
-    if 'price' in request.json and type(request.json['price']) is not bool:
-        abort(400)
-    order[0]['instrument'] = request.json.get('instrument', order[0]['instrument'])
-    order[0]['quantity'] = request.json.get('quantity', order[0]['quantity'])
-    order[0]['price'] = request.json.get('price', order[0]['price'])
-    return jsonify({'order': order[0]})
-
 @app.route('/uran/api/v1.0/orders/<int:order_id>', methods=['DELETE'])
 def delete_order(order_id):
     order = [order for order in orders if order['id'] == order_id]
